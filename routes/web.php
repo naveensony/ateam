@@ -35,7 +35,7 @@ Route::prefix('invitation')->group(function () {
     Route::get('/{id}', [InvitationController::class, 'index'])->name('invite.index');
     Route::post('/store', [InvitationController::class, 'store'])->name('invite.store');
     Route::get('/delete/{id}', [InvitationController::class, 'delete'])->name('invite.delete');
-    Route::get('/check', [InvitationController::class, 'check'])->name('invite.check');
+    Route::post('/check', [InvitationController::class, 'check'])->name('invite.check');
 });
 
 

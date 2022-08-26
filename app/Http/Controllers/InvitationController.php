@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invitation;
 use Illuminate\Http\Request;
+use Mail;
 
 class InvitationController extends Controller
 {
@@ -23,7 +24,7 @@ class InvitationController extends Controller
         Invitation::create($input);
 
         ////send email to this id
-
+           $this->sent($request->email);
 
 
         //////////////
@@ -53,5 +54,26 @@ class InvitationController extends Controller
     {
         Invitation::where('id',$id)->delete();
         return response()->json(['success'=>"Invitee deleted."]);
+    }
+
+    public function sent($email)
+    {
+        
+        ////send email to this id
+       
+        try
+        {
+            $data = array('name'=>"User");
+            Mail::send(['text'=>'mail'], $data, function($message) use ($email) {
+                $message->to($email, 'Ateam')->subject
+                   ('You are invited for the event');
+                $message->from(env('MAIL_FROM_ADDRESS'),env('MAIL_FROM_NAME'));
+             });
+        }
+        catch (\Exception $e)
+        {
+            return $e;
+        }
+        
     }
 }
